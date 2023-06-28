@@ -1,4 +1,5 @@
 import React from 'react'
+import { app } from './firebaseConfig';
 
 function ElectiveSelection() {
   return (

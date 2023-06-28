@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react';
-// import { app } from './firebaseConfig';
+import { app } from './firebaseConfig';
 import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home"
 import Electives from './pages/Electives';
