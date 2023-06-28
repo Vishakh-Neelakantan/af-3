@@ -9,7 +9,7 @@ const Home = () => {
         <br></br>
         <Link to="/electives">Electives</Link>
         <br></br>
-        <Link to="/subjects">Subjects</Link>
+        <Link to="/students">Students</Link>
         <br></br>
         <Link to="/electiveselection">Elective selection</Link>
     </div>
