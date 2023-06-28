@@ -2,7 +2,7 @@ import React from 'react'
 
 const Electives = () => {
   return (
-    <div>Rk</div>
+    <div>coming soon....</div>
   )
 }
 
