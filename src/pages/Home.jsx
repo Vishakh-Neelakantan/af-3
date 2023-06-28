@@ -11,7 +11,7 @@ const Home = () => {
         <br></br>
         <Link to="/subjects">Subjects</Link>
         <br></br>
-        <Link to="/electivesubjects">Elective selection</Link>
+        <Link to="/electiveselection">Elective selection</Link>
     </div>
   )
 }
