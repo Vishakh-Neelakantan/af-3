@@ -2,7 +2,7 @@ import React from 'react'
 
 const Electives = () => {
   return (
-    <div>Electives</div>
+    <div>coming soon....</div>
   )
 }
 
