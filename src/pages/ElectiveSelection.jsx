@@ -1,146 +1,82 @@
 import React, { useState, useEffect } from "react";
 import { database } from "../firebaseConfig";
-import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
-
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where,
+} from "firebase/firestore";
 
 const ElectiveSelection = () => {
   const [students, setStudents] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState("");
-  const [selectedSubjects, setSelectedSubjects] = useState([]);
-  const [electiveSubjects, setElectiveSubjects] = useState([]);
 
   useEffect(() => {
-    // Fetch students from Firebase database
     const fetchStudents = async () => {
-        try {
-          const studentsSnapshot = await getDocs(collection(database, "students"));
-          const studentsData = studentsSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          setStudents(studentsData);
-        } catch (error) {
-          console.error("Error fetching students:", error);
-        }
-      };
-      
-
-      const fetchElectiveSubjects = async () => {
-        try {
-          const subjectsSnapshot = await getDocs(collection(database, "electiveSubjects"));
-          const subjectsData = subjectsSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          setElectiveSubjects(subjectsData);
-        } catch (error) {
-          console.error("Error fetching elective subjects:", error);
-        }
-      };
-  
+      try {
+        const studentsCollection = collection(database, "students");
+        const studentsSnapshot = await getDocs(studentsCollection);
+        const studentsData = studentsSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          enrolledSubjects: [], // Initialize enrolled subjects as an empty array
+        }));
+        setStudents(studentsData);
+      } catch (error) {
+        console.error("Error fetching students: ", error);
+      }
+    };
 
     fetchStudents();
-    fetchElectiveSubjects();
   }, []);
 
-  const handleStudentSelect = (event) => {
-    const selectedStudentId = event.target.value;
-    setSelectedStudent(selectedStudentId);
-    setSelectedSubjects([]);
+  const handleViewSubjects = async (studentId) => {
+    try {
+      const studentDoc = doc(database, "students", studentId);
+      const studentSnapshot = await getDoc(studentDoc);
+      const studentData = studentSnapshot.data();
 
-    // Fetch elective subjects for the selected student
-    const fetchSelectedSubjects = async () => {
-        try {
-          const selectedSubjectsSnapshot = await getDocs(collection(database, "selectedSubjects"));
-          const selectedSubjectsData = selectedSubjectsSnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          setSelectedSubjects(selectedSubjectsData);
-        } catch (error) {
-          console.error("Error fetching selected subjects:", error);
-        }
-      };
-      
-
-    fetchSelectedSubjects();
-  };
-
-  const handleSubjectSelect = (event) => {
-    const selectedSubjectId = event.target.value;
-    setSelectedSubjects((prevSelectedSubjects) => {
-      if (prevSelectedSubjects.includes(selectedSubjectId)) {
-        // Subject already selected, remove it
-        return prevSelectedSubjects.filter((subjectId) => subjectId !== selectedSubjectId);
-      } else {
-        // Subject not selected, add it
-        return [...prevSelectedSubjects, selectedSubjectId];
+      // Fetch enrolled subjects
+      const enrolledSubjects = [];
+      for (const subjectId of studentData.electiveSubjects) {
+        const subjectDoc = doc(database, "electiveSubjects", subjectId);
+        const subjectSnapshot = await getDoc(subjectDoc);
+        const subjectData = subjectSnapshot.data();
+        enrolledSubjects.push(subjectData.name);
       }
-    });
-  };
 
-  const handleSaveSubjects = async () => {
-    try {
-      await updateDoc(doc(database, "students", selectedStudent), {
-        electiveSubjects: selectedSubjects,
-      });
-      console.log("Subjects saved successfully!");
+      // Update the enrolledSubjects array for the selected student
+      setStudents((prevStudents) =>
+        prevStudents.map((student) =>
+          student.id === studentId
+            ? { ...student, enrolledSubjects: enrolledSubjects }
+            : student
+        )
+      );
+
     } catch (error) {
-      console.error("Error saving subjects:", error);
-    }
-  };
-  const handleDeleteSubjects = async () => {
-    try {
-        await updateDoc(doc(database,"students", selectedStudent), {
-        electiveSubjects: [],
-      });
-      console.log("Subjects deleted successfully!");
-      setSelectedSubjects([]);
-    } catch (error) {
-      console.error("Error deleting subjects:", error);
+      console.error("Error fetching enrolled subjects: ", error);
     }
   };
 
   return (
     <div>
-      <h2>Student Page</h2>
-      <label htmlFor="students">Select a student:</label>
-      <select id="students" value={selectedStudent} onChange={handleStudentSelect}>
-        <option value="">-- Select Student --</option>
-        {students.map((student) => (
-          <option key={student.id} value={student.id}>
-            {student.name}
-          </option>
-        ))}
-      </select>
-
-      {selectedStudent && (
-        <div>
-          <h3>Selected Subjects:</h3>
-          {selectedSubjects.length === 0 ? (
-            <p>No subjects selected.</p>
-          ) : (
+      {students.map((student) => (
+        <div key={student.id}>
+          <p>Name: {student.name}</p>
+          <button onClick={() => handleViewSubjects(student.id)}>
+            View Enrolled Subjects
+          </button>
+          {student.enrolledSubjects.length > 0 && (
             <ul>
-              {selectedSubjects.map((subjectId) => (
-                <li key={subjectId}>{subjectId}</li>
+              {student.enrolledSubjects.map((subject) => (
+                <li key={subject}>{subject}</li>
               ))}
             </ul>
           )}
-
-          <label htmlFor="subjects">Select a subject:</label>
-          <select id="subjects" onChange={handleSubjectSelect}>
-            <option value="">-- Select Subject --</option>
-            {electiveSubjects.map((subject) => (
-              <option key={subject.id} value={subject.id}>
-                {subject.name}
-              </option>
-            ))}
-          </select>
-
-          <button onClick={handleSaveSubjects}>Save Subjects</button>
-          <button onClick={handleDeleteSubjects}>Delete Subjects</button>
         </div>
-      )}
+      ))}
     </div>
   );
 };

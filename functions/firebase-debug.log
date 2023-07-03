@@ -1,0 +1,14 @@
+[debug] [2023-07-01T12:52:50.432Z] ----------------------------------------------------------------------
+[debug] [2023-07-01T12:52:50.434Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Rk\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js functions:shell
+[debug] [2023-07-01T12:52:50.434Z] CLI Version:   12.4.2
+[debug] [2023-07-01T12:52:50.435Z] Platform:      win32
+[debug] [2023-07-01T12:52:50.435Z] Node Version:  v18.16.0
+[debug] [2023-07-01T12:52:50.435Z] Time:          Sat Jul 01 2023 18:22:50 GMT+0530 (India Standard Time)
+[debug] [2023-07-01T12:52:50.436Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-07-01T12:52:50.512Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-07-01T12:52:50.513Z] > authorizing via signed-in user (reitika.kumar@gmail.com)
+[debug] [2023-07-01T12:52:50.513Z] [iam] checking project ggbois-16c37 for permissions ["firebase.projects.get"]
+[debug] [2023-07-01T12:52:50.515Z] >>> [apiv2][query] POST https://cloudresourcemanager.googleapis.com/v1/projects/ggbois-16c37:testIamPermissions [none]
+[debug] [2023-07-01T12:52:50.515Z] >>> [apiv2][(partial)header] POST https://cloudresourcemanager.googleapis.com/v1/projects/ggbois-16c37:testIamPermissions x-goog-quota-user=projects/ggbois-16c37
+[debug] [2023-07-01T12:52:50.515Z] >>> [apiv2][body] POST https://cloudresourcemanager.googleapis.com/v1/projects/ggbois-16c37:testIamPermissions {"permissions":["firebase.projects.get"]}
