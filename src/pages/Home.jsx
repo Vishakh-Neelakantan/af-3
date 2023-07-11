@@ -11,7 +11,7 @@ const Home = () => {
         <br></br>
         <Link to="/students">Students</Link>
         <br></br>
-        <Link to="/electiveselection">Elective selection</Link>
+        <Link to="/allocations">Allocations</Link>
     </div>
   )
 }

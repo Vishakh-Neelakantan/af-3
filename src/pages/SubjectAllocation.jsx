@@ -84,6 +84,31 @@ const SubjectAllocation = () => {
     }
   };
 
+  const allocateStudent = async () => {
+    if (selectedStudent !== '' && selectedSubject !== '') {
+      const existingAllocation = allocations.find(
+        allocation => allocation.subjectId === selectedSubject && allocation.studentId === selectedStudent
+      );
+
+      if (existingAllocation) {
+        setErrorMessage('Entry already exists');
+      } else {
+        try {
+          const allocationRef = collection(database, 'allocations');
+          const newAllocation = { studentId: selectedStudent, subjectId: selectedSubject };
+          await addDoc(allocationRef, newAllocation);
+
+          setSelectedStudent('');
+          setSelectedSubject('');
+          setAllocations([...allocations, newAllocation]);
+          setErrorMessage('');
+        } catch (error) {
+          console.error('Error allocating subject:', error);
+        }
+      }
+    }
+  };
+
   const deleteAllocation = async (allocationId) => {
     try {
       await deleteDoc(doc(database, 'allocations', allocationId));
