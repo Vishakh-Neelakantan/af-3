@@ -5,7 +5,10 @@ import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home"
 import Electives from './pages/Electives';
 import Students from './pages/Students';
-import ElectiveSelection from './pages/ElectiveSelection';
+import ElectiveSelection from './pages/SubjectAllocation';
+import Allocations from './pages/Allocations';
+import StudentAllocation from './pages/StudentAllocation';
+import SubjectAllocation from './pages/SubjectAllocation';
 
 
 
@@ -17,7 +20,9 @@ function App() {
           <Route path="/" element={<Home />} /> 
           <Route path="/electives" element={<Electives />} /> 
           <Route path="/students" element={<Students />} />
-          <Route path="/electiveselection" element={<ElectiveSelection />} /> 
+          <Route path="/allocations" element={<Allocations />} /> 
+          <Route path="/studentallocation" element={<StudentAllocation />} /> 
+          <Route path="/subjectallocation" element={<SubjectAllocation />} /> 
         </Routes>
       </Router>
     </div>
