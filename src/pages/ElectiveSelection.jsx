@@ -1,84 +1,161 @@
-import React, { useState, useEffect } from "react";
-import { database } from "../firebaseConfig";
-import {
-  collection,
-  getDocs,
-  doc,
-  getDoc,
-  query,
-  where,
-} from "firebase/firestore";
+import React, { useState, useEffect } from 'react';
+import { database } from '../firebaseConfig';
+import { collection, getDocs, doc, addDoc, updateDoc, query, where, deleteDoc } from 'firebase/firestore';
 
-const ElectiveSelection = () => {
+const SubjectAllocation = () => {
   const [students, setStudents] = useState([]);
+  const [subjects, setSubjects] = useState([]);
+  const [selectedStudent, setSelectedStudent] = useState('');
+  const [selectedSubject, setSelectedSubject] = useState('');
+  const [allocations, setAllocations] = useState([]);
+  const [filteredAllocations, setFilteredAllocations] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const fetchStudents = async () => {
-      try {
-        const studentsCollection = collection(database, "students");
-        const studentsSnapshot = await getDocs(studentsCollection);
-        const studentsData = studentsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-          enrolledSubjects: [], // Initialize enrolled subjects as an empty array
-        }));
-        setStudents(studentsData);
-      } catch (error) {
-        console.error("Error fetching students: ", error);
-      }
+      const studentsRef = collection(database, 'students');
+      const snapshot = await getDocs(studentsRef);
+      const studentList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setStudents(studentList);
+    };
+
+    const fetchSubjects = async () => {
+      const subjectsRef = collection(database, 'subjects');
+      const snapshot = await getDocs(subjectsRef);
+      const subjectList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setSubjects(subjectList);
+    };
+
+    const fetchAllocations = async () => {
+      const allocationsRef = collection(database, 'allocations');
+      const snapshot = await getDocs(allocationsRef);
+      const allocationList = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setAllocations(allocationList);
     };
 
     fetchStudents();
+    fetchSubjects();
+    fetchAllocations();
   }, []);
 
-  const handleViewSubjects = async (studentId) => {
-    try {
-      const studentDoc = doc(database, "students", studentId);
-      const studentSnapshot = await getDoc(studentDoc);
-      const studentData = studentSnapshot.data();
+  useEffect(() => {
+    if (selectedStudent === '' && selectedSubject === '') {
+      setFilteredAllocations(allocations);
+    } else if (selectedSubject !== '') {
+      const filtered = allocations.filter(allocation => allocation.subjectId === selectedSubject);
+      setFilteredAllocations(filtered);
+    } else if (selectedStudent !== '') {
+      const filtered = allocations.filter(allocation => allocation.studentId === selectedStudent);
+      setFilteredAllocations(filtered);
+    }
+  }, [selectedStudent, selectedSubject, allocations]);
 
-      // Fetch enrolled subjects
-      const enrolledSubjects = [];
-      for (const subjectId of studentData.electiveSubjects) {
-        const subjectDoc = doc(database, "electiveSubjects", subjectId);
-        const subjectSnapshot = await getDoc(subjectDoc);
-        const subjectData = subjectSnapshot.data();
-        enrolledSubjects.push(subjectData.name);
-      }
-
-      // Update the enrolledSubjects array for the selected student
-      setStudents((prevStudents) =>
-        prevStudents.map((student) =>
-          student.id === studentId
-            ? { ...student, enrolledSubjects: enrolledSubjects }
-            : student
-        )
+  const allocateSubject = async () => {
+    if (selectedStudent !== '' && selectedSubject !== '') {
+      const existingAllocation = allocations.find(
+        allocation => allocation.studentId === selectedStudent && allocation.subjectId === selectedSubject
       );
 
+      if (existingAllocation) {
+        setErrorMessage('Entry already exists');
+      } else {
+        try {
+          const allocationRef = collection(database, 'allocations');
+          const newAllocation = { studentId: selectedStudent, subjectId: selectedSubject };
+          await addDoc(allocationRef, newAllocation);
+
+          setSelectedStudent('');
+          setSelectedSubject('');
+          setAllocations([...allocations, newAllocation]);
+          setErrorMessage('');
+        } catch (error) {
+          console.error('Error allocating subject:', error);
+        }
+      }
+    }
+  };
+
+  const deleteAllocation = async (allocationId) => {
+    try {
+      await deleteDoc(doc(database, 'allocations', allocationId));
+      const updatedAllocations = allocations.filter((allocation) => allocation.id !== allocationId);
+      setAllocations(updatedAllocations);
+      setFilteredAllocations(updatedAllocations);
     } catch (error) {
-      console.error("Error fetching enrolled subjects: ", error);
+      console.error('Error deleting allocation:', error);
     }
   };
 
   return (
     <div>
-      {students.map((student) => (
-        <div key={student.id}>
-          <p>Name: {student.name}</p>
-          <button onClick={() => handleViewSubjects(student.id)}>
-            View Enrolled Subjects
-          </button>
-          {student.enrolledSubjects.length > 0 && (
-            <ul>
-              {student.enrolledSubjects.map((subject) => (
-                <li key={subject}>{subject}</li>
-              ))}
-            </ul>
-          )}
-        </div>
-      ))}
+      <h1>Subject Allocation</h1>
+      {errorMessage && <div>{errorMessage}</div>}
+      <div>
+        <label>Student:</label>
+        <select
+          value={selectedStudent}
+          onChange={(e) => setSelectedStudent(e.target.value)}
+        >
+          <option value="">All Students</option>
+          {students.map((student) => (
+            <option key={student.id} value={student.id}>{student.name}</option>
+          ))}
+        </select>
+      </div>
+      <div>
+        <label>Subject:</label>
+        <select
+          value={selectedSubject}
+          onChange={(e) => setSelectedSubject(e.target.value)}
+        >
+          <option value="">All Subjects</option>
+          {subjects.map((subject) => (
+            <option key={subject.id} value={subject.id}>{subject.name}</option>
+          ))}
+        </select>
+      </div>
+      <button onClick={allocateSubject}>Allocate Subject</button>
+
+      <div>
+        <h2>Allocations</h2>
+        {selectedStudent !== '' && (
+          <div>
+            <h3>Selected Student: {students.find((s) => s.id === selectedStudent)?.name}</h3>
+          </div>
+        )}
+        {selectedSubject !== '' && (
+          <div>
+            <h3>Selected Subject: {subjects.find((s) => s.id === selectedSubject)?.name}</h3>
+          </div>
+        )}
+        <ul>
+          {filteredAllocations.map((allocation) => {
+            const student = students.find((s) => s.id === allocation.studentId);
+            const subject = subjects.find((s) => s.id === allocation.subjectId);
+
+            return (
+              <li key={allocation.id}>
+                <strong>Student:</strong> {student ? student.name : 'Unknown'}
+                <br />
+                <strong>Subject:</strong> {subject ? subject.name : 'Unknown'}
+                <button onClick={() => deleteAllocation(allocation.id)}>Delete</button>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
     </div>
   );
 };
 
-export default ElectiveSelection;
+export default SubjectAllocation;
+
