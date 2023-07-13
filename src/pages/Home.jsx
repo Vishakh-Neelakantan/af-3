@@ -8,7 +8,7 @@ const Home = () => {
         <div className='w-full h-screen bg-neutral-900 flex flex-col justify-center items-center pb-12'>
           <div className='w-5/6 h-2/3 flex'>
             <div className='w-3/4 h-full bg-red-50 rounded-xl m-2 flex justify-center items-center'>
-              <h1 className='text-6xl'>Elective Management System</h1>
+              <h1 className='text-6xl w-full text-center'>Elective Management System</h1>
             </div>
             <div className='w-1/4 h-full bg-front-page rounded-xl m-2'>
 
