@@ -1,24 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { database } from '../firebaseConfig';
-import { collection, getDocs, doc, addDoc, deleteDoc, updateDoc } from 'firebase/firestore';
+import React, { useState, useEffect } from "react";
+import { database } from "../firebaseConfig";
+import {
+  collection,
+  getDocs,
+  doc,
+  addDoc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
 
 const Subjects = () => {
   const [subjects, setSubjects] = useState([]);
-  const [newSubjectCode, setNewSubjectCode] = useState('');
-  const [newSubjectName, setNewSubjectName] = useState('');
-  const [newSubjectDescription, setNewSubjectDescription] = useState('');
-  const [editSubjectId, setEditSubjectId] = useState('');
-  const [editSubjectCode, setEditSubjectCode] = useState('');
-  const [editSubjectName, setEditSubjectName] = useState('');
-  const [editSubjectDescription, setEditSubjectDescription] = useState('');
+  const [newSubjectCode, setNewSubjectCode] = useState("");
+  const [newSubjectName, setNewSubjectName] = useState("");
+  const [newSubjectDescription, setNewSubjectDescription] = useState("");
+  const [editSubjectId, setEditSubjectId] = useState("");
+  const [editSubjectCode, setEditSubjectCode] = useState("");
+  const [editSubjectName, setEditSubjectName] = useState("");
+  const [editSubjectDescription, setEditSubjectDescription] = useState("");
 
   useEffect(() => {
     const fetchSubjects = async () => {
-      const subjectsRef = collection(database, 'subjects');
+      const subjectsRef = collection(database, "subjects");
       const snapshot = await getDocs(subjectsRef);
       const subjectList = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...doc.data()
+        ...doc.data(),
       }));
       setSubjects(subjectList);
     };
@@ -27,39 +34,50 @@ const Subjects = () => {
   }, []);
 
   const addSubject = async () => {
-    if (newSubjectCode !== '' && newSubjectName !== '' && newSubjectDescription !== '') {
+    if (
+      newSubjectCode !== "" &&
+      newSubjectName !== "" &&
+      newSubjectDescription !== ""
+    ) {
       try {
-        const subjectsRef = collection(database, 'subjects');
+        const subjectsRef = collection(database, "subjects");
         const newSubject = {
           code: newSubjectCode,
           name: newSubjectName,
-          description: newSubjectDescription
+          description: newSubjectDescription,
         };
         await addDoc(subjectsRef, newSubject);
 
-        setNewSubjectCode('');
-        setNewSubjectName('');
-        setNewSubjectDescription('');
+        setNewSubjectCode("");
+        setNewSubjectName("");
+        setNewSubjectDescription("");
         setSubjects([...subjects, newSubject]);
       } catch (error) {
-        console.error('Error adding subject:', error);
+        console.error("Error adding subject:", error);
       }
     }
   };
 
   const deleteSubject = async (subjectId) => {
     try {
-      const subjectRef = doc(database, 'subjects', subjectId);
+      const subjectRef = doc(database, "subjects", subjectId);
       await deleteDoc(subjectRef);
 
-      const updatedSubjects = subjects.filter((subject) => subject.id !== subjectId);
+      const updatedSubjects = subjects.filter(
+        (subject) => subject.id !== subjectId
+      );
       setSubjects(updatedSubjects);
     } catch (error) {
-      console.error('Error deleting subject:', error);
+      console.error("Error deleting subject:", error);
     }
   };
 
-  const editSubject = (subjectId, subjectCode, subjectName, subjectDescription) => {
+  const editSubject = (
+    subjectId,
+    subjectCode,
+    subjectName,
+    subjectDescription
+  ) => {
     setEditSubjectId(subjectId);
     setEditSubjectCode(subjectCode);
     setEditSubjectName(subjectName);
@@ -68,11 +86,11 @@ const Subjects = () => {
 
   const updateSubject = async () => {
     try {
-      const subjectRef = doc(database, 'subjects', editSubjectId);
+      const subjectRef = doc(database, "subjects", editSubjectId);
       await updateDoc(subjectRef, {
         code: editSubjectCode,
         name: editSubjectName,
-        description: editSubjectDescription
+        description: editSubjectDescription,
       });
 
       const updatedSubjects = subjects.map((subject) => {
@@ -81,92 +99,158 @@ const Subjects = () => {
             ...subject,
             code: editSubjectCode,
             name: editSubjectName,
-            description: editSubjectDescription
+            description: editSubjectDescription,
           };
         }
         return subject;
       });
 
       setSubjects(updatedSubjects);
-      setEditSubjectId('');
-      setEditSubjectCode('');
-      setEditSubjectName('');
-      setEditSubjectDescription('');
+      setEditSubjectId("");
+      setEditSubjectCode("");
+      setEditSubjectName("");
+      setEditSubjectDescription("");
     } catch (error) {
-      console.error('Error updating subject:', error);
+      console.error("Error updating subject:", error);
     }
   };
 
   return (
-    <div className='w-full bg-neutral-800 text-white p-12 flex flex-col'>
-      <div className='w-full'>
-      <h1 className='text-5xl'>Electives</h1>
+    <div className="w-full bg-neutral-800 p-12 flex flex-col">
+      <div className="w-full text-center text-white ">
+        <h1 className="text-7xl">Electives</h1>
       </div>
-      
       <br></br>
-      <div>
-        <input
-          type="text"
-          value={newSubjectCode}
-          onChange={(e) => setNewSubjectCode(e.target.value)}
-          placeholder="Enter subject code"
-        />
-        <input
-          type="text"
-          value={newSubjectName}
-          onChange={(e) => setNewSubjectName(e.target.value)}
-          placeholder="Enter subject name"
-        />
-        <input
-          type="text"
-          value={newSubjectDescription}
-          onChange={(e) => setNewSubjectDescription(e.target.value)}
-          placeholder="Enter subject description"
-        />
-        <button onClick={addSubject}>Add Subject</button>
+      <br></br>
+      <div className="flex">
+        <div className="w-1/3 bg-violet-800 p-16 mr-2 rounded-xl">
+          <div className="text-white">
+            <h1 className="text-5xl">Add a Subject here</h1>
+            <br></br>
+            <h1 className="text-2xl">Enter student details:</h1>
+          </div>
+
+          <br></br>
+          <div>
+            <h1 className="text-white">Enter subject code</h1>
+            <input
+              className="m-2  h-8 rounded-xl"
+              type="text"
+              value={newSubjectCode}
+              onChange={(e) => setNewSubjectCode(e.target.value)}
+              placeholder=" Enter subject code"
+            />
+            <br></br>
+            <h1 className="text-white">Enter subject name</h1>
+            <input
+              className="m-2  h-8 rounded-xl"
+              type="text"
+              value={newSubjectName}
+              onChange={(e) => setNewSubjectName(e.target.value)}
+              placeholder="Enter subject name"
+            />
+            <br></br>
+            <h1 className="text-white">Enter subject description</h1>
+            <input
+              className="m-2  h-8 rounded-xl"
+              type="text"
+              value={newSubjectDescription}
+              onChange={(e) => setNewSubjectDescription(e.target.value)}
+              placeholder="Enter subject description"
+            />
+          </div>
+          <div className="text-white m-4">
+            <button
+              className="bg-violet-700 outline outline-violet-400 outline-4 hover:bg-pink-500 hover:outline-pink-300  p-2 rounded-3xl"
+              onClick={addSubject}
+            >
+              Add Subject
+            </button>
+          </div>
+        </div>
+        <div className="p-16 w-2/3 bg-blue-700 ml-2 rounded-xl text-white">
+          <table className="w-full">
+            <thead>
+              <tr className="text-3xl">
+                <th className="text-left">Code</th>
+                <th className="text-left">Name</th>
+                <th className="text-left">Description</th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <br></br>
+            <tbody>
+              {subjects.map((subject) => (
+                <tr key={subject.id}>
+                  {subject.id === editSubjectId ? (
+                    <>
+                      <td>
+                        <input className="text-black p-2 rounded-xl"
+                          type="text"
+                          value={editSubjectCode}
+                          onChange={(e) => setEditSubjectCode(e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input className="text-black p-2 rounded-xl"
+                          type="text"
+                          value={editSubjectName}
+                          onChange={(e) => setEditSubjectName(e.target.value)}
+                        />
+                      </td>
+                      <td>
+                        <input className="text-black p-2 rounded-xl"
+                          type="text"
+                          value={editSubjectDescription}
+                          onChange={(e) =>
+                            setEditSubjectDescription(e.target.value)
+                          }
+                        />
+                      </td>
+                      <td>
+                        <button className="bg-violet-700 outline outline-violet-400 outline-2 hover:bg-pink-500 hover:outline-pink-300  rounded-3xl w-24" onClick={updateSubject}>Save</button>
+                      </td>
+                      <td></td>
+                    </>
+                  ) : (
+                    <>
+                      <td>
+                        {subject.code}
+                      </td>
+                      <td>
+                        {subject.name}
+                      </td>
+                      <td>
+                        {subject.description}
+                      </td>
+                      <td>
+                        <button className="bg-violet-700 outline outline-violet-400 outline-2 hover:bg-pink-500 hover:outline-pink-300 w-12  rounded-3xl"
+                          onClick={() =>
+                            editSubject(
+                              subject.id,
+                              subject.code,
+                              subject.name,
+                              subject.description
+                            )
+                          }
+                        >
+                          Edit
+                        </button>
+                      </td>
+                      <td>
+                        <button className="bg-violet-700 outline outline-violet-400 outline-2 hover:bg-pink-500 hover:outline-pink-300 w-24 rounded-3xl" onClick={() => deleteSubject(subject.id)}>
+                          Delete
+                        </button>
+                      </td>
+                    </>
+                  )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-      <ul>
-        {subjects.map((subject) => (
-          <li key={subject.id}>
-            {subject.id === editSubjectId ? (
-              <>
-                <input
-                  type="text"
-                  value={editSubjectCode}
-                  onChange={(e) => setEditSubjectCode(e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={editSubjectName}
-                  onChange={(e) => setEditSubjectName(e.target.value)}
-                />
-                <input
-                  type="text"
-                  value={editSubjectDescription}
-                  onChange={(e) => setEditSubjectDescription(e.target.value)}
-                />
-                <button onClick={updateSubject}>Save</button>
-              </>
-            ) : (
-              <>
-                <div>
-                  <strong>Code:</strong> {subject.code}
-                </div>
-                <div>
-                  <strong>Name:</strong> {subject.name}
-                </div>
-                <div>
-                  <strong>Description:</strong> {subject.description}
-                </div>
-                <button onClick={() => editSubject(subject.id, subject.code, subject.name, subject.description)}>
-                  Edit
-                </button>
-                <button onClick={() => deleteSubject(subject.id)}>Delete</button>
-              </>
-            )}
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
