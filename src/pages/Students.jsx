@@ -4,17 +4,16 @@ import { collection, getDocs, doc, addDoc, deleteDoc, updateDoc } from 'firebase
 
 const Students = () => {
   const [students, setStudents] = useState([]);
-  const [newStudentId, setNewStudentId] = useState('');
-  const [newStudentName, setNewStudentName] = useState('');
-  const [newStudentEmail, setNewStudentEmail] = useState('');
-  const [newStudentMobile, setNewStudentMobile] = useState('');
-  const [editStudentId, setEditStudentId] = useState('');
-  const [editStudentName, setEditStudentName] = useState('');
-  const [editStudentEmail, setEditStudentEmail] = useState('');
-  const [editStudentMobile, setEditStudentMobile] = useState('');
+  const [newStudent, setNewStudent] = useState({
+    id: '',
+    name: '',
+    email: '',
+    mobile: ''
+  });
+  const [editingStudent, setEditingStudent] = useState(null);
 
-  useEffect(() => {
-    const fetchStudents = async () => {
+  const fetchStudents = async () => {
+    try {
       const studentsRef = collection(database, 'students');
       const snapshot = await getDocs(studentsRef);
       const studentList = snapshot.docs.map((doc) => ({
@@ -22,28 +21,29 @@ const Students = () => {
         ...doc.data()
       }));
       setStudents(studentList);
-    };
+    } catch (error) {
+      console.error('Error fetching students:', error);
+    }
+  };
 
+  useEffect(() => {
     fetchStudents();
   }, []);
 
   const addStudent = async () => {
-    if (newStudentId !== '' && newStudentName !== '' && newStudentEmail !== '' && newStudentMobile !== '') {
+    if (newStudent.id !== '' && newStudent.name !== '' && newStudent.email !== '' && newStudent.mobile !== '') {
       try {
         const studentsRef = collection(database, 'students');
-        const newStudent = {
-          id: newStudentId,
-          name: newStudentName,
-          email: newStudentEmail,
-          mobile: newStudentMobile
-        };
         await addDoc(studentsRef, newStudent);
 
-        setNewStudentId('');
-        setNewStudentName('');
-        setNewStudentEmail('');
-        setNewStudentMobile('');
-        setStudents([...students, newStudent]);
+        setNewStudent({
+          id: '',
+          name: '',
+          email: '',
+          mobile: ''
+        });
+
+        fetchStudents();
       } catch (error) {
         console.error('Error adding student:', error);
       }
@@ -62,41 +62,29 @@ const Students = () => {
     }
   };
 
-  const editStudent = (studentId, studentName, studentEmail, studentMobile) => {
-    setEditStudentId(studentId);
-    setEditStudentName(studentName);
-    setEditStudentEmail(studentEmail);
-    setEditStudentMobile(studentMobile);
+  const editStudent = (student) => {
+    setEditingStudent(student);
   };
 
   const updateStudent = async () => {
     try {
-      const studentRef = doc(database, 'students', editStudentId);
+      const studentRef = doc(database, 'students', editingStudent.id);
       await updateDoc(studentRef, {
-        id: editStudentId,
-        name: editStudentName,
-        email: editStudentEmail,
-        mobile: editStudentMobile
+        id: editingStudent.id,
+        name: editingStudent.name,
+        email: editingStudent.email,
+        mobile: editingStudent.mobile
       });
 
       const updatedStudents = students.map((student) => {
-        if (student.id === editStudentId) {
-          return {
-            ...student,
-            id: editStudentId,
-            name: editStudentName,
-            email: editStudentEmail,
-            mobile: editStudentMobile
-          };
+        if (student.id === editingStudent.id) {
+          return { ...editingStudent };
         }
         return student;
       });
 
       setStudents(updatedStudents);
-      setEditStudentId('');
-      setEditStudentName('');
-      setEditStudentEmail('');
-      setEditStudentMobile('');
+      setEditingStudent(null);
     } catch (error) {
       console.error('Error updating student:', error);
     }
@@ -108,26 +96,26 @@ const Students = () => {
       <div>
         <input
           type="text"
-          value={newStudentId}
-          onChange={(e) => setNewStudentId(e.target.value)}
+          value={newStudent.id}
+          onChange={(e) => setNewStudent({ ...newStudent, id: e.target.value })}
           placeholder="Enter student ID"
         />
         <input
           type="text"
-          value={newStudentName}
-          onChange={(e) => setNewStudentName(e.target.value)}
+          value={newStudent.name}
+          onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })}
           placeholder="Enter student name"
         />
         <input
           type="text"
-          value={newStudentEmail}
-          onChange={(e) => setNewStudentEmail(e.target.value)}
+          value={newStudent.email}
+          onChange={(e) => setNewStudent({ ...newStudent, email: e.target.value })}
           placeholder="Enter student email"
         />
         <input
           type="text"
-          value={newStudentMobile}
-          onChange={(e) => setNewStudentMobile(e.target.value)}
+          value={newStudent.mobile}
+          onChange={(e) => setNewStudent({ ...newStudent, mobile: e.target.value })}
           placeholder="Enter student mobile"
         />
         <button onClick={addStudent}>Add Student</button>
@@ -135,27 +123,27 @@ const Students = () => {
       <ul>
         {students.map((student) => (
           <li key={student.id}>
-            {student.id === editStudentId ? (
+            {editingStudent && editingStudent.id === student.id ? (
               <>
                 <input
                   type="text"
-                  value={editStudentId}
-                  onChange={(e) => setEditStudentId(e.target.value)}
+                  value={editingStudent.id}
+                  onChange={(e) => setEditingStudent({ ...editingStudent, id: e.target.value })}
                 />
                 <input
                   type="text"
-                  value={editStudentName}
-                  onChange={(e) => setEditStudentName(e.target.value)}
+                  value={editingStudent.name}
+                  onChange={(e) => setEditingStudent({ ...editingStudent, name: e.target.value })}
                 />
                 <input
                   type="text"
-                  value={editStudentEmail}
-                  onChange={(e) => setEditStudentEmail(e.target.value)}
+                  value={editingStudent.email}
+                  onChange={(e) => setEditingStudent({ ...editingStudent, email: e.target.value })}
                 />
                 <input
                   type="text"
-                  value={editStudentMobile}
-                  onChange={(e) => setEditStudentMobile(e.target.value)}
+                  value={editingStudent.mobile}
+                  onChange={(e) => setEditingStudent({ ...editingStudent, mobile: e.target.value })}
                 />
                 <button onClick={updateStudent}>Save</button>
               </>
@@ -173,7 +161,7 @@ const Students = () => {
                 <div>
                   <strong>Mobile:</strong> {student.mobile}
                 </div>
-                <button onClick={() => editStudent(student.id, student.name, student.email, student.mobile)}>Edit</button>
+                <button onClick={() => editStudent(student)}>Edit</button>
                 <button onClick={() => deleteStudent(student.id)}>Delete</button>
               </>
             )}
