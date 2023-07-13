@@ -122,12 +122,12 @@ const Subjects = () => {
       </div>
       <br></br>
       <br></br>
-      <div className="flex">
-        <div className="w-1/3 bg-violet-800 p-16 mr-2 rounded-xl">
+      <div className="md:flex">
+        <div className="md:w-1/3 bg-violet-800 p-16 md:mr-2 rounded-xl">
           <div className="text-white">
             <h1 className="text-5xl">Add a Subject here</h1>
             <br></br>
-            <h1 className="text-2xl">Enter student details:</h1>
+            <h1 className="text-2xl">Enter subject details:</h1>
           </div>
 
           <br></br>
@@ -168,10 +168,10 @@ const Subjects = () => {
             </button>
           </div>
         </div>
-        <div className="p-16 w-2/3 bg-blue-700 ml-2 rounded-xl text-white">
-          <table className="w-full">
+        <div className="p-16 md:w-2/3 bg-blue-700 md:ml-2 rounded-xl text-white overflow-x-auto">
+          <table className="w-full table-auto">
             <thead>
-              <tr className="text-3xl">
+              <tr className="md:text-3xl text-xl">
                 <th className="text-left">Code</th>
                 <th className="text-left">Name</th>
                 <th className="text-left">Description</th>
