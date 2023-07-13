@@ -100,7 +100,7 @@ const SubjectAllocation = () => {
   };
 
   return (
-    <div>
+    <div className='w-full h-auto'>
       <h1>Subject Allocation</h1>
       <div>
         {subjects.map((subject) => (
