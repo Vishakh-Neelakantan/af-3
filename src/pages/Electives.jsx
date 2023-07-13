@@ -98,8 +98,12 @@ const Subjects = () => {
   };
 
   return (
-    <div>
-      <h1>Subject Management Tool</h1>
+    <div className='w-full bg-neutral-800 text-white p-12 flex flex-col'>
+      <div className='w-full'>
+      <h1 className='text-5xl'>Electives</h1>
+      </div>
+      
+      <br></br>
       <div>
         <input
           type="text"

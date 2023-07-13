@@ -121,7 +121,7 @@ const SubjectAllocation = () => {
   };
 
   return (
-    <div>
+    <div className='w-full h-auto'>
       <h1>Subject Allocation</h1>
       {errorMessage && <div>{errorMessage}</div>}
       <div>
