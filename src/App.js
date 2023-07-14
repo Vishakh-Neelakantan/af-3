@@ -8,7 +8,7 @@ import StudentAllocation from './pages/StudentAllocation';
 import SubjectAllocation from './pages/SubjectAllocation';
 import Navbar from './components/Navbar';
 import './index.css'
-
+import LoginPage from "./pages/LoginPage";
 
 
 
@@ -19,6 +19,7 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} /> 
+          <Route path="/LoginPage" element={<LoginPage />} /> 
           <Route path="/electives" element={<Electives />} /> 
           <Route path="/students" element={<Students />} />
           <Route path="/allocations" element={<Allocations />} /> 

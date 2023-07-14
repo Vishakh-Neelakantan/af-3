@@ -5,6 +5,7 @@ import {
   getDocs,
   doc,
   addDoc,
+  setDoc,
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -45,8 +46,8 @@ const Students = () => {
       newStudent.mobile !== ""
     ) {
       try {
-        const studentsRef = collection(database, "students");
-        await addDoc(studentsRef, newStudent);
+        const studentsRef = doc(database, "students", newStudent.id);
+        await setDoc(studentsRef, newStudent);
 
         setNewStudent({
           id: "",

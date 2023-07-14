@@ -34,7 +34,7 @@ const Navbar = () => {
           </button>
           </Link>
           <div className='md:w-4'></div>
-          <Link to="/">
+          <Link to="/LoginPage">
             <button
             className="bg-violet-700 outline outline-violet-400 outline-2 hover:bg-pink-500 hover:outline-pink-300 w-24 rounded-3xl"
           >
