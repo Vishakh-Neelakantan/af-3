@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
-  const history = useHistory();
+  const Navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false);
 
   const handleLogin = () => {
     // Simulating a successful login
     setLoggedIn(true);
     // Redirect to the home page
-    history.push('/');
+    Navigate('/');
   };
 
   return (
