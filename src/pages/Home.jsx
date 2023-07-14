@@ -8,7 +8,7 @@ const Home = () => {
         <div className='w-full h-screen bg-neutral-900 flex flex-col justify-center items-center pb-12'>
           <div className='w-5/6 h-2/3 flex'>
             <div className='w-3/4 h-full bg-red-50 rounded-xl m-2 flex justify-center items-center'>
-              <h1 className='text-7xl w-full text-center font-anton'><stron>Elective Management System</stron></h1>
+              <h1 className='text-7xl w-full text-center font-anton'><strong>Elective Management System</strong></h1>
             </div>
             <div className='w-1/4 h-full bg-front-page rounded-xl m-2'>
 
