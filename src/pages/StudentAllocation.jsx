@@ -98,7 +98,7 @@ const StudentAllocation = () => {
   return (
     <div className="w-full h-screen bg-neutral-800 p-12 flex flex-col">
       <div className="w-full text-center text-white">
-        <h1 className="text-5xl">Student Allocation</h1>
+        <h1 className="text-5xl font-anton">Student Allocation</h1>
       </div>
       <br></br>
       <br></br>
