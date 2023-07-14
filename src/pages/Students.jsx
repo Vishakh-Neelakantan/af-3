@@ -107,7 +107,7 @@ const Students = () => {
   return (
     <div className="w-full bg-neutral-800 p-12 flex flex-col">
       <div className="w-full text-center text-white ">
-        <h1 className="text-7xl">Students</h1>
+        <h1 className="text-7xl font-anton">Students</h1>
       </div>
       <br></br>
       <br></br>

@@ -1,20 +1,20 @@
 import React from 'react';
-import { app } from './firebaseConfig';
 import {BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from "./pages/Home"
 import Electives from './pages/Electives';
 import Students from './pages/Students';
-import ElectiveSelection from './pages/SubjectAllocation';
 import Allocations from './pages/Allocations';
 import StudentAllocation from './pages/StudentAllocation';
 import SubjectAllocation from './pages/SubjectAllocation';
 import Navbar from './components/Navbar';
+import './index.css'
+
 
 
 
 function App() {
   return (
-    <div className="App-header">
+    <div className="font-barlow">
       <Router>
         <Navbar />
         <Routes>

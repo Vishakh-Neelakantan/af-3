@@ -6,6 +6,10 @@ module.exports = {
       backgroundImage: theme => ({
          'front-page': "url('/src/images/frontpage.png')"
       }),
+      fontFamily: {
+        'barlow': ['Barlow', 'sans-serif'],
+        'anton': ['Anton', 'sans-serif'],
+      },
     },
   },
   plugins: [],

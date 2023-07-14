@@ -102,7 +102,7 @@ const SubjectAllocation = () => {
   return (
     <div className="w-full h-screen bg-neutral-800 p-12 flex flex-col">
       <div className="w-full text-center text-white">
-        <h1 className="text-5xl">Subject Allocation</h1>
+        <h1 className="text-5xl font-anton">Subject Allocation</h1>
       </div>
       <br></br>
       <br></br>
@@ -134,6 +134,8 @@ const SubjectAllocation = () => {
           ))}
         </div>
         <div className="p-8 md:w-2/3 bg-blue-700 md:ml-2 rounded-xl text-white overflow-x-auto h-full overflow-y-auto">
+          <div>Select a subject to view allocations</div>
+          <br></br>
   {selectedSubject && (
     <div className="w-full">
       <div className="w-full flex">
