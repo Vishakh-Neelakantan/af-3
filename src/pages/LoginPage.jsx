@@ -4,6 +4,8 @@ import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { Navigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import elex_logo from '../images/elex_logo.png'
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -79,11 +81,17 @@ const LoginPage = () => {
 
   return (
     <div>
-    <div className="w-full h-screen bg-neutral-900 flex flex-col  items-center p-12 text-white">
-      
-        <h1 className="text-white text-7xl w-full text-center font-anton">
+    <div className="w-full h-screen bg-neutral-900 flex flex-col  items-center text-white">
+      <div className="flex flex-col justify-center">
+        <div>
+          <img className="scale-50" src={elex_logo} />
+        </div>
+      <h1 className="text-white text-7xl w-full text-center font-anton">
           <strong>Login</strong>
         </h1>
+
+      </div>
+        
       
       <div>
         <br></br>

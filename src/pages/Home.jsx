@@ -2,6 +2,7 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 import '../index.css'
 import Navbar from '../components/Navbar'
+import elex_logo from '../images/elex_logo.png'
 
 const Home = () => {
   return (
@@ -9,9 +10,13 @@ const Home = () => {
       <Navbar/>
         <div className='w-full h-screen bg-neutral-900 flex flex-col justify-center items-center pb-12'>
           <div className='w-5/6 h-2/3 flex'>
-            <div className='w-3/4 h-full bg-red-50 rounded-xl m-2 flex justify-center items-center'>
+            <div className='w-3/4 h-full bg-red-50 rounded-xl m-2 flex flex-col justify-center items-center'>
               <h1 className='text-7xl w-full text-center font-anton'><strong>Elective Management System</strong></h1>
+              <div>
+              <img className='scale-50' src={elex_logo}/>
             </div>
+            </div>
+            
             <div className='w-1/4 h-full bg-front-page rounded-xl m-2'>
 
             </div>

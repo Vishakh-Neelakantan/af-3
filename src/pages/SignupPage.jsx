@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { auth, database } from "../firebaseConfig";
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { Navigate } from "react-router-dom";
+import elex_logo from '../images/elex_logo.png'
+
+
 
 const SignupPage = () => {
   const [email, setEmail] = useState("");

@@ -3,13 +3,15 @@ import logo from '../images/logo.png'
 import homeicon from '../images/home.png'
 import profile from '../images/profile.png'
 import {Link} from 'react-router-dom'
+import elex_logo from '../images/elex_logo.png'
+
 
 const Navbar = () => {
   return (
     <div className='h-[80px] w-full bg-neutral-950 flex text-white'>
-        <div className='w-1/3 grid grid-cols-1 justify-items-start content-center pl-8'>
+        <div className='w-1/3 grid grid-cols-1 justify-items-start content-center '>
             <div className='flex'>
-                <img src={logo} className='scale-50'/>
+                <img src={elex_logo} className='scale-[25%]'/>
             </div>
             
         </div>
