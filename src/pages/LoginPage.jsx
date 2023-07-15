@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { auth, database } from "../firebaseConfig";
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { Navigate } from "react-router-dom";
-import {Link} from 'react-router-dom'
+import { Link } from "react-router-dom";
+import Navbar from "../components/Navbar";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -78,28 +79,53 @@ const LoginPage = () => {
 
   return (
     <div>
-      <h1>Login Page</h1>
-      <form onSubmit={handleLogin}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Login</button>
-      </form>
-      <Link to ="/SignupPage">
-      <button>Signup</button>
-      </Link>
+    <div className="w-full h-screen bg-neutral-900 flex flex-col  items-center p-12 text-white">
+      
+        <h1 className="text-white text-7xl w-full text-center font-anton">
+          <strong>Login</strong>
+        </h1>
+      
+      <div>
+        <br></br>
+        <br></br>
+        <div className="flex flex-col justify-center-align-center">
+          <form onSubmit={handleLogin}>
+            <input className="text-black p-2 rounded-xl"
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <div className=""></div>
+            <br></br>
+            <input className="text-black p-2 rounded-xl"
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            
+            
+          </form>
+          <br></br>
+          <div>
+            
+            <button className="bg-violet-700 outline outline-violet-400 outline-4 hover:bg-pink-500 hover:outline-pink-300  p-2 rounded-3xl" type="submit" onClick={handleLogin}>Login</button>
+            </div>
+          <div>
+            <br></br>
+            <Link to="/SignupPage">
+              <button>
+                Already have an account? <h1 className="text-blue-600">Signup</h1>
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
       {error && <p>{error}</p>}
+    </div>
     </div>
   );
 };

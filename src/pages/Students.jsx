@@ -9,6 +9,7 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
+import Navbar from "../components/Navbar";
 
 const Students = () => {
   const [students, setStudents] = useState([]);
@@ -106,6 +107,8 @@ const Students = () => {
   };
 
   return (
+    <div>
+      <Navbar />
     <div className="w-full bg-neutral-800 p-12 flex flex-col">
       <div className="w-full text-center text-white ">
         <h1 className="text-7xl font-anton">Students</h1>
@@ -267,6 +270,7 @@ const Students = () => {
           </table>
         </div>
       </div>
+    </div>
     </div>
   );
 };

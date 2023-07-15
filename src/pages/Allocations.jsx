@@ -1,8 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import Navbar from '../components/Navbar'
 
 const Allocations = () => {
   return (
+    <div>
+      <Navbar />
+
     <div className='w-full h-screen bg-neutral-900 flex md:flex-row flex-col justify-center items-center'>
       
 
@@ -18,6 +22,7 @@ const Allocations = () => {
       </div></Link>
       
 
+    </div>
     </div>
   )
 }

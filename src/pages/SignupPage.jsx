@@ -51,46 +51,63 @@ const SignupPage = () => {
   }
 
   return (
-    <div>
-      <h1>Signup Page</h1>
+    <div className="w-full h-screen bg-neutral-900 flex flex-col  items-center p-12 text-white">
+      <h1 className="text-white text-7xl w-full text-center font-anton">
+          <strong>Sign up</strong>
+        </h1>
+        <br></br>
+        <br></br>
+        <br></br>
+        <div className="flex flex-col justify-center align-center items-center">
       <form onSubmit={handleSignup}>
-        <input
+        <input className="text-black p-2 rounded-xl"
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
         />
-        <input
+        <br></br>
+        <br></br>
+        <input className="text-black p-2 rounded-xl"
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <input
+        <br></br>
+        <br></br>
+        <input className="text-black p-2 rounded-xl"
           type="text"
           placeholder="Mobile Number"
           value={mobileNo}
           onChange={(e) => setMobileNo(e.target.value)}
           required
         />
-        <input
+        <br></br>
+        <br></br>
+        <input className="text-black p-2 rounded-xl"
           type="text"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
-        <input
+        <br></br>
+        <br></br>
+        <input className="text-black p-2 rounded-xl"
           type="text"
           placeholder="Admin Registration Number"
           value={adminRegNo}
           onChange={(e) => setAdminRegNo(e.target.value)}
           required
         />
-        <button type="submit">Signup</button>
+        <br></br>
+        <br></br>
+        <button className="bg-violet-700 outline outline-violet-400 outline-4 hover:bg-pink-500 hover:outline-pink-300  p-2 rounded-3xl" type="submit">Signup</button>
       </form>
+      </div>
       {error && <p>{error}</p>}
     </div>
   );

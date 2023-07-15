@@ -17,7 +17,6 @@ function App() {
   return (
     <div className="font-barlow">
       <Router>
-        <Navbar />
         <Routes>
           <Route path="/Home" element={<Home />} /> 
           <Route path="/" element={<LoginPage />} /> 

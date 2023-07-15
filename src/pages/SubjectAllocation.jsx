@@ -8,6 +8,7 @@ import {
   addDoc,
   deleteDoc,
 } from "firebase/firestore";
+import Navbar from "../components/Navbar";
 
 const SubjectAllocation = () => {
   const [students, setStudents] = useState([]);
@@ -100,6 +101,8 @@ const SubjectAllocation = () => {
   };
 
   return (
+    <div>
+      <Navbar />
     <div className="w-full h-screen bg-neutral-800 p-12 flex flex-col">
       <div className="w-full text-center text-white">
         <h1 className="text-5xl font-anton">Subject Allocation</h1>
@@ -191,6 +194,7 @@ const SubjectAllocation = () => {
 </div>
 
       </div>
+    </div>
     </div>
   );
 };
