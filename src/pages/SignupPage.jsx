@@ -2,44 +2,15 @@ import React, { useState } from "react";
 import { auth, database } from "../firebaseConfig";
 import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { Navigate } from "react-router-dom";
-import {Link} from 'react-router-dom'
 
-const LoginPage = () => {
+const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [mobileNo, setMobileNo] = useState("");
+  const [name, setName] = useState("");
+  const [adminRegNo, setAdminRegNo] = useState("");
   const [error, setError] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const querySnapshot = await getDocs(
-        query(collection(database, "logins"), where("email", "==", email))
-      );
-      if (querySnapshot.empty) {
-        setError("Invalid credentials. Please try again.");
-        return;
-      }
-
-      const loginData = querySnapshot.docs[0].data();
-      if (loginData.password !== password) {
-        setError("Invalid credentials. Please try again.");
-        return;
-      }
-
-      // Perform login action
-      // ...
-
-      // Clear form inputs and error message
-      setEmail("");
-      setPassword("");
-      setError("");
-      setLoggedIn(true);
-    } catch (error) {
-      console.error("Error logging in:", error);
-      setError("An error occurred. Please try again later.");
-    }
-  };
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -55,7 +26,7 @@ const LoginPage = () => {
 
       // Create a new login document
       const loginRef = collection(database, "logins");
-      const newLogin = { email, password };
+      const newLogin = { email, password, mobileNo, name, adminRegNo };
       await addDoc(loginRef, newLogin);
 
       // Perform signup action (e.g., send confirmation email)
@@ -64,6 +35,9 @@ const LoginPage = () => {
       // Clear form inputs and error message
       setEmail("");
       setPassword("");
+      setMobileNo("");
+      setName("");
+      setAdminRegNo("");
       setError("");
       setLoggedIn(true);
     } catch (error) {
@@ -73,13 +47,13 @@ const LoginPage = () => {
   };
 
   if (loggedIn) {
-    return <Navigate to="/Home" />;
+    return <Navigate to="/" />;
   }
 
   return (
     <div>
-      <h1>Login Page</h1>
-      <form onSubmit={handleLogin}>
+      <h1>Signup Page</h1>
+      <form onSubmit={handleSignup}>
         <input
           type="email"
           placeholder="Email"
@@ -94,14 +68,32 @@ const LoginPage = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button type="submit">Login</button>
+        <input
+          type="text"
+          placeholder="Mobile Number"
+          value={mobileNo}
+          onChange={(e) => setMobileNo(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="text"
+          placeholder="Admin Registration Number"
+          value={adminRegNo}
+          onChange={(e) => setAdminRegNo(e.target.value)}
+          required
+        />
+        <button type="submit">Signup</button>
       </form>
-      <Link to ="/SignupPage">
-      <button>Signup</button>
-      </Link>
       {error && <p>{error}</p>}
     </div>
   );
 };
 
-export default LoginPage;
+export default SignupPage;

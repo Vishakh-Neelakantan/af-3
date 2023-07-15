@@ -26,7 +26,7 @@ const Navbar = () => {
         </div>
         <div className='w-1/3 grid grid-cols-1 justify-items-end content-center pr-16 flex'>
             <div className='flex'>
-            <Link to="/">
+            <Link to="/Home">
             <button
             className="bg-violet-700 outline outline-violet-400 outline-2 hover:bg-pink-500 hover:outline-pink-300 w-24 rounded-3xl"
           >
@@ -34,11 +34,11 @@ const Navbar = () => {
           </button>
           </Link>
           <div className='md:w-4'></div>
-          <Link to="/LoginPage">
+          <Link to="/">
             <button
             className="bg-violet-700 outline outline-violet-400 outline-2 hover:bg-pink-500 hover:outline-pink-300 w-24 rounded-3xl"
           >
-            Signin
+            Sign-out
           </button>
           </Link>
 

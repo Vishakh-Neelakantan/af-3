@@ -4,6 +4,7 @@ import Home from "./pages/Home"
 import Electives from './pages/Electives';
 import Students from './pages/Students';
 import Allocations from './pages/Allocations';
+import SignupPage from './pages/SignupPage';
 import StudentAllocation from './pages/StudentAllocation';
 import SubjectAllocation from './pages/SubjectAllocation';
 import Navbar from './components/Navbar';
@@ -18,8 +19,9 @@ function App() {
       <Router>
         <Navbar />
         <Routes>
-          <Route path="/" element={<Home />} /> 
-          <Route path="/LoginPage" element={<LoginPage />} /> 
+          <Route path="/Home" element={<Home />} /> 
+          <Route path="/" element={<LoginPage />} /> 
+          <Route path="/SignupPage" element={<SignupPage />} /> 
           <Route path="/electives" element={<Electives />} /> 
           <Route path="/students" element={<Students />} />
           <Route path="/allocations" element={<Allocations />} /> 
